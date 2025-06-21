@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import { HomePage } from "./pages/Home";
+import { NotFoundPage } from "./pages/NotFound";
 
-function App() {
-  const [message, setMessage] = useState<string>("");
-
-  useEffect(() => {
-    fetch("/api/hello")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message))
-      .catch((err) => console.error(err));
-  }, []);
-
+export const App = () => {
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>My Monorepo App</h1>
-      <p>Message from server: {message}</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route element={<NotFoundPage />} />
+    </Routes>
   );
-}
-
-export default App;
+};
