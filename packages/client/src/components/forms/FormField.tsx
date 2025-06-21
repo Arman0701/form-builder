@@ -1,11 +1,11 @@
 import { FieldType, IField, InputComponentProps } from "@/types/field.types";
-import { Button, Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
-import { BaseIcon } from "../ui/BaseIcon";
+import { Card, CardFooter, CardHeader } from "@heroui/react";
 import { TextInput } from "./TextInput";
 import { NumberInput } from "./NumberInput";
 import { SelectInput } from "./SelectInput";
 import { FC } from "react";
 import { CheckboxInput } from "./CheckboxInput";
+import { FormFieldActions } from "./FormFieldActions";
 
 interface IProps {
   field: IField;
@@ -30,12 +30,7 @@ export const FormField = ({ field }: IProps) => {
           ) : null}
         </h3>
         <div className="flex gap-6">
-          <Button isIconOnly variant="light">
-            <BaseIcon icon="Settings" size={20} color="default" />
-          </Button>
-          <Button isIconOnly variant="light" color="danger">
-            <BaseIcon icon="X" size={20} color="default" />
-          </Button>
+          <FormFieldActions field={field} />
         </div>
       </CardHeader>
       <CardFooter className="p-0 h-12.5">

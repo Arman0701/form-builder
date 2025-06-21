@@ -12,7 +12,7 @@ export const HomePage: FC = () => {
   return (
     <section className="flex flex-col h-screen">
       <Header />
-      <div className="flex relative flex-1 w-full h-full overflow-hidden">
+      <div className="flex relative flex-1 w-full overflow-hidden">
         <AsideMenu />
         <main className="flex flex-col flex-1 items-center justify-center w-full h-full ">
           <div className="w-full min-h-full overflow-y-auto">
