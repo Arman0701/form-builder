@@ -5,6 +5,7 @@ import { FC } from "react";
 
 export const SelectInput: FC<InputComponentProps<ISelectField>> = ({
   field,
+  errors,
 }) => {
   const { isEditMode } = useAppSelector((store) => store.appSlice);
 
@@ -20,6 +21,7 @@ export const SelectInput: FC<InputComponentProps<ISelectField>> = ({
       value={field.value}
       placeholder={field.placeholder}
       name={field.name}
+      errorMessage={errors[field.name] ? errors[field.name] : undefined}
     >
       {field.options.map((option) => (
         <SelectItem key={option.value}>{option.label}</SelectItem>

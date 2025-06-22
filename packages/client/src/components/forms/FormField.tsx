@@ -1,16 +1,22 @@
 import { FieldType, IField, InputComponentProps } from "@/types/field.types";
 import { Card, CardFooter, CardHeader } from "@heroui/react";
-import { TextInput } from "./TextInput";
-import { NumberInput } from "./NumberInput";
-import { SelectInput } from "./SelectInput";
+import { TextInput } from "./inputs/TextInput";
+import { NumberInput } from "./inputs/NumberInput";
+import { SelectInput } from "./inputs/SelectInput";
 import { FC } from "react";
-import { CheckboxInput } from "./CheckboxInput";
+import { CheckboxInput } from "./inputs/CheckboxInput";
 import { FormFieldActions } from "./FormFieldActions";
+import { twMerge } from "tailwind-merge";
+import { useAppSelector } from "@/hooks/redux/useAppSelector";
 
 interface IProps {
   field: IField;
+  errors?: Record<string, string>;
+  touched?: Record<string, boolean>;
 }
-export const FormField = ({ field }: IProps) => {
+export const FormField = ({ field, errors, touched }: IProps) => {
+  const { isEditMode } = useAppSelector((store) => store.appSlice);
+
   const inputsMap: Record<FieldType, FC<InputComponentProps<IField>>> = {
     text: TextInput,
     number: NumberInput,
@@ -21,7 +27,12 @@ export const FormField = ({ field }: IProps) => {
   const RelativeInput = inputsMap[field.type];
 
   return (
-    <Card className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl px-6 py-6">
+    <Card
+      className={twMerge(
+        "bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl px-6 py-6",
+        !isEditMode ? "border-solid" : ""
+      )}
+    >
       <CardHeader as="header" className="flex justify-between p-0 mb-4">
         <h3 className="font-bold">
           {field.label}{" "}
@@ -34,7 +45,7 @@ export const FormField = ({ field }: IProps) => {
         </div>
       </CardHeader>
       <CardFooter className="p-0 h-12.5">
-        <RelativeInput field={field} />
+        <RelativeInput field={field} errors={errors} />
       </CardFooter>
     </Card>
   );

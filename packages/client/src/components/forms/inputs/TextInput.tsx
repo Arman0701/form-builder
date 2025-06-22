@@ -1,16 +1,19 @@
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
-import { InputComponentProps, INumberField } from "@/types/field.types";
+import { InputComponentProps, ITextField } from "@/types/field.types";
 import { Input } from "@heroui/react";
 import { FC } from "react";
 
-export const NumberInput: FC<InputComponentProps<INumberField>> = ({
+export const TextInput: FC<InputComponentProps<ITextField>> = ({
   field,
+  errors,
 }) => {
   const { isEditMode } = useAppSelector((store) => store.appSlice);
 
+  console.log("field :::", field);
+
   return (
     <Input
-      type="number"
+      type="text"
       variant="faded"
       size="lg"
       radius="sm"
@@ -21,6 +24,7 @@ export const NumberInput: FC<InputComponentProps<INumberField>> = ({
       id={field.id}
       placeholder={field.placeholder}
       name={field.name}
+      errorMessage={errors[field.name] ? errors[field.name] : undefined}
     />
   );
 };

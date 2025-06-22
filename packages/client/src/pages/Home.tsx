@@ -2,12 +2,21 @@ import { FormField } from "@/components/forms/FormField";
 import { AsideMenu } from "@/components/layout/AsideMenu";
 import { Header } from "@/components/layout/Header";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
-import { Divider } from "@heroui/react";
+import { Button, Divider } from "@heroui/react";
+import { Form, Formik } from "formik";
 import { FC } from "react";
 
 export const HomePage: FC = () => {
   const { isEditMode } = useAppSelector((store) => store.appSlice);
-  const { formName, fields } = useAppSelector((store) => store.fieldsSlice);
+  const { formName, fields, formId } = useAppSelector(
+    (store) => store.fieldsSlice
+  );
+
+  console.log("fields :::", fields);
+
+  const formSubmitHandler = (values: any) => {
+    console.log("values :::", values);
+  };
 
   return (
     <section className="flex flex-col h-screen">
@@ -16,18 +25,40 @@ export const HomePage: FC = () => {
         <AsideMenu />
         <main className="flex flex-col flex-1 items-center justify-center w-full h-full ">
           <div className="w-full min-h-full overflow-y-auto">
-            <form className="mx-auto flex flex-col gap-6 w-2/3 min-h-96 shadow-2xl border-2 border-gray-100 rounded-2xl px-6 py-8">
-              <h1 className="text-3xl font-bold">{formName}</h1>
-              {isEditMode ? (
-                <>
-                  <span>Configure your form fields below</span>
-                  <Divider className="my-6" />
-                </>
-              ) : null}
-              {fields.map((f) => (
-                <FormField field={f} />
-              ))}
-            </form>
+            <Formik initialValues={{}} onSubmit={formSubmitHandler}>
+              {({ values, errors, touched }) => (
+                <Form
+                  id={formId}
+                  className="mx-auto mt-4 flex flex-col gap-6 w-2/3 min-h-96 shadow-2xl border-2 border-gray-100 rounded-2xl px-6 py-8"
+                >
+                  <h1 className="text-3xl font-bold">{formName}</h1>
+                  {isEditMode ? (
+                    <>
+                      <span>Configure your form fields below</span>
+                      <Divider />
+                    </>
+                  ) : null}
+                  {fields.length > 0 ? (
+                    fields.map((f) => (
+                      <FormField field={f} key={f.id} errors={errors} />
+                    ))
+                  ) : (
+                    <span className="text-gray-500 text-center text-sm">
+                      No fields added yet. Click on a field type above to get
+                      started
+                    </span>
+                  )}
+                  <Button
+                    isDisabled={isEditMode}
+                    type="submit"
+                    variant="solid"
+                    color="primary"
+                  >
+                    Submit Form
+                  </Button>
+                </Form>
+              )}
+            </Formik>
           </div>
         </main>
       </div>

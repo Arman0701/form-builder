@@ -6,7 +6,6 @@ import {
   IFieldOnAdd,
   IFieldOnEdit,
   IFieldOnReorder,
-  IFieldRest,
   ISelectField,
 } from "@/types/field.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -14,17 +13,19 @@ import { v4 as genId } from "uuid";
 
 type InitialState = {
   formName: string;
+  formId: string;
   fields: IField[];
 };
 
 const initialState: InitialState = {
+  formId: genId(),
   formName: "Untitled From",
   fields: [
     {
       id: genId(),
       name: "input-1",
       isRequired: true,
-      order: 1,
+      order: 0,
       type: "text",
       label: "New Text Field",
       placeholder: "Enter text",
@@ -35,7 +36,7 @@ const initialState: InitialState = {
       id: genId(),
       name: "input-2",
       isRequired: false,
-      order: 2,
+      order: 1,
       type: "number",
       label: "New Number Field",
       placeholder: "Enter number",
@@ -46,7 +47,7 @@ const initialState: InitialState = {
       id: genId(),
       name: "input-3",
       isRequired: false,
-      order: 3,
+      order: 2,
       type: "select",
       label: "New Select Field",
       placeholder: "Check one of options",
@@ -58,7 +59,7 @@ const initialState: InitialState = {
       id: genId(),
       name: "input-4",
       isRequired: false,
-      order: 4,
+      order: 3,
       type: "checkbox",
       label: "New Checkbox Field",
       defaultValue: false,
@@ -91,6 +92,7 @@ const fieldsSlice = createSlice({
         name: payload.name,
         order: state.fields.length,
         label: `New ${label} field`,
+        type: payload.type,
       };
 
       const newField = {
@@ -117,34 +119,35 @@ const fieldsSlice = createSlice({
       state.fields.push(newField);
     },
     removeField(state, { payload }: PayloadAction<IFieldID>) {
-      state.fields.filter((field) => field.id === payload);
+      state.fields = state.fields.filter((field) => field.id !== payload);
     },
     editField(state, { payload }: PayloadAction<IFieldOnEdit>) {
-      const { id, ...payloadWithoutId } = payload;
-      state.fields.map((field) => {
-        if (field.id === id) {
-          return { ...field, ...payloadWithoutId };
+      state.fields = state.fields.map((field) => {
+        if (field.id === payload.id) {
+          return {
+            ...field,
+            ...payload,
+          } as IField;
         }
         return field;
       });
     },
-    reorderField(state, { payload }: PayloadAction<IFieldOnReorder>) {
-      const currentIndex = state.fields.findIndex(
-        (item) => item.id === payload.id
-      );
-      if (
-        currentIndex !== -1 ||
-        payload.order > 0 ||
-        payload.order < state.fields.length
-      ) {
-        const updated = [...state.fields];
-        const [movedItem] = updated.splice(currentIndex, 1);
-        state.fields = updated.splice(payload.order, 0, movedItem);
-      }
+    setReorderedList(state, { payload }: PayloadAction<IFieldOnReorder>) {
+      state.fields = payload;
+    },
+    resetFormData(state) {
+      state.fields = initialState.fields;
+      state.formName = initialState.formName;
     },
   },
 });
 
-export const { setFormName, addField, removeField, editField, reorderField } =
-  fieldsSlice.actions;
+export const {
+  setFormName,
+  addField,
+  removeField,
+  editField,
+  setReorderedList,
+  resetFormData,
+} = fieldsSlice.actions;
 export default fieldsSlice.reducer;

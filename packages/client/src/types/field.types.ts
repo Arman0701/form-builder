@@ -9,6 +9,7 @@ export type IFieldBase = {
 
   label?: string;
   placeholder?: string;
+  type: FieldType;
 };
 
 interface ITextFieldRest {
@@ -34,7 +35,7 @@ interface ISelectFieldRest {
   type: "select";
   defaultValue: string | undefined;
   value: string | undefined;
-  options: Array<{ label: string; value: string }>;
+  options: IFieldOption[];
 }
 
 export type ITextField = IFieldBase & ITextFieldRest;
@@ -43,12 +44,9 @@ export type ICheckboxField = IFieldBase & ICheckboxFieldRest;
 export type ISelectField = IFieldBase & ISelectFieldRest;
 
 export type IField = INumberField | ICheckboxField | ISelectField | ITextField;
-export type IFieldRest =
-  | ITextFieldRest
-  | INumberFieldRest
-  | ICheckboxFieldRest
-  | ISelectFieldRest;
+
 export type IFieldID = string;
+export type IFieldOption = { label: string; value: string; id: string };
 
 export type IFieldOnAdd = Omit<
   IField,
@@ -57,17 +55,14 @@ export type IFieldOnAdd = Omit<
 
 export type IFieldOnEdit = Omit<IField, "order" | "name" | "value">;
 
-export type IFieldOnReorder = Omit<
-  IField,
-  | "type"
-  | "isRequired"
-  | "name"
-  | "defaultValue"
-  | "value"
-  | "label"
-  | "placeholder"
->;
+export type IFieldOnReorder = IField[];
 
 export interface InputComponentProps<T> {
   field: IField & T;
+  errors?: any;
+}
+
+export interface InputComponentPropsWithClose
+  extends InputComponentProps<IField> {
+  onCloseDrawer: () => void;
 }

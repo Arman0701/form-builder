@@ -23,12 +23,11 @@ export const FieldCardDraggable = ({ field }: InputComponentProps<{}>) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm ${
+      className={`w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm ${
         isDragging ? "opacity-50 shadow-lg" : ""
       }`}
     >
       <div className="flex items-center gap-3">
-        {/* Drag Handle */}
         <div
           {...attributes}
           {...listeners}
