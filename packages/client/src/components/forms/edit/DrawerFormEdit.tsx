@@ -38,6 +38,7 @@ export const DrawerFormEdit = ({
   ) => {
     if (fieldType !== "select") {
       const { options, ...withoutOptions } = values;
+      values.defaultValue = defaultValue;
       dispatch(editField(withoutOptions));
       return;
     }
@@ -57,10 +58,13 @@ export const DrawerFormEdit = ({
     options,
   };
 
+  console.log("field.defaultValue :::", field.defaultValue);
+
   return (
     <Formik initialValues={initialValues} onSubmit={submitHandler}>
       <Form className="flex flex-col gap-4 h-full">
         <Field
+          aria-label="checkbox input"
           name="isRequired"
           as={Checkbox}
           defaultSelected={field.isRequired}
@@ -68,12 +72,14 @@ export const DrawerFormEdit = ({
           Required field
         </Field>
         <Field
+          aria-label="text input"
           name="label"
           as={Input}
           label="Field label"
           defaultValue={field.label}
         />
         <Field
+          aria-label="select input"
           name="type"
           as={Select}
           label="Field type"
@@ -88,6 +94,7 @@ export const DrawerFormEdit = ({
           <SelectItem key="checkbox">Checkbox</SelectItem>
         </Field>
         <Field
+          aria-label="text input"
           name="placeholder"
           as={Input}
           label="Field placeholder"
@@ -95,17 +102,23 @@ export const DrawerFormEdit = ({
         />
         {fieldType === "checkbox" ? (
           <Field
+            aria-label="select input"
             name="defaultValue"
             as={Select}
             label="Default value"
-            defaultSelectedKeys={[field.defaultValue || "false"]}
+            defaultSelectedKeys={[field.defaultValue]}
+            selectedKeys={[field.defaultValue]}
+            onSelectionChange={([key]: string) => {
+              setDefaultValue(key);
+            }}
           >
-            <SelectItem key="true">True</SelectItem>
-            <SelectItem key="false">False</SelectItem>
+            <SelectItem key="checked">True</SelectItem>
+            <SelectItem key="unchecked">False</SelectItem>
           </Field>
         ) : fieldType === "select" ? (
           <Field
             as={Select}
+            aria-label="select input"
             name="defaultValue"
             defaultSelectedKeys={[options[0]?.label ?? null]}
             label="Default value"
@@ -119,6 +132,7 @@ export const DrawerFormEdit = ({
           </Field>
         ) : fieldType === "number" ? (
           <Input
+            aria-label="number input"
             type="number"
             defaultValue={"0"}
             label="Default value"
@@ -130,6 +144,7 @@ export const DrawerFormEdit = ({
           </Input>
         ) : (
           <Field
+            aria-label="text input"
             name="defaultValue"
             as={Input}
             label="Default value"
@@ -140,6 +155,7 @@ export const DrawerFormEdit = ({
         {fieldType === "select" ? (
           <>
             <Field
+              aria-label="text input"
               as={Input}
               label="Set new option"
               size="md"
@@ -173,6 +189,7 @@ export const DrawerFormEdit = ({
                 <Divider />
                 {options.map((o) => (
                   <Input
+                    aria-label="text input"
                     value={o.value}
                     key={o.id}
                     endContent={

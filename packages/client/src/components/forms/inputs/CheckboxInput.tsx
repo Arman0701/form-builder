@@ -21,9 +21,8 @@ export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
       isDisabled={isEditMode}
       size="lg"
       radius="sm"
-      // isRequired={field.isRequired}
-      checked={field.value}
-      defaultSelected={field.defaultValue}
+      defaultSelected={field.defaultValue === "checked"}
+      isSelected={field.defaultValue === "checked"}
       placeholder={field?.placeholder || ""}
       errorMessage={errors[field.name]}
       isInvalid={!!errors[field.name]}
@@ -32,13 +31,13 @@ export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
         dispatch(
           editField({
             ...field,
-            value: isSelected,
-            defaultValue: isSelected,
+            value: isSelected ? "checked" : "unchecked",
+            defaultValue: isSelected ? "checked" : "unchecked",
           })
         );
       }}
     >
-      {field.placeholder}
+      {field.placeholder} | {errors[field.name]}
     </Field>
   );
 };

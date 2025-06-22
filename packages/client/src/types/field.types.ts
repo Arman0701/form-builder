@@ -25,8 +25,8 @@ interface INumberFieldRest {
 
 interface ICheckboxFieldRest {
   type: "checkbox";
-  defaultValue: boolean | undefined;
-  value: boolean | undefined;
+  defaultValue: "checked" | "unchecked";
+  value: "checked" | "unchecked";
 }
 
 interface ISelectFieldRest {

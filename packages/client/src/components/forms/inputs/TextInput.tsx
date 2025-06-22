@@ -22,7 +22,6 @@ export const TextInput: FC<InputComponentProps<ITextField>> = ({
       size="lg"
       radius="sm"
       isDisabled={isEditMode}
-      // isRequired={field.isRequired}
       value={field.defaultValue}
       defaultValue={field.defaultValue}
       id={field.id}

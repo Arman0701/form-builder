@@ -70,7 +70,6 @@ export const HomePage: FC = () => {
                   className="mx-auto my-4 flex flex-col gap-6 w-2/3 min-h-96 shadow-2xl border-2 border-gray-100 rounded-2xl px-6 py-8"
                 >
                   <h1 className="text-3xl font-bold">{formName}</h1>
-                  <pre>{JSON.stringify(errors)}</pre>
                   {isEditMode ? (
                     <>
                       <span>Configure your form fields below</span>
