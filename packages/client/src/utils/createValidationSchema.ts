@@ -24,7 +24,14 @@ export const createValidationSchema = (fields: IField[]) => {
         validator = Yup.mixed(); // fallback
     }
 
-    if (field.isRequired) {
+    const conditions = [
+      field.defaultValue === "",
+      field.value === "",
+      field.defaultValue === false,
+      field.value === false,
+    ].includes(true);
+
+    if (field.isRequired && conditions) {
       validator = validator.required(`${field.label} is required`);
     }
 

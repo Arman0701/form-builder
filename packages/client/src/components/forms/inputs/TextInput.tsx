@@ -15,13 +15,14 @@ export const TextInput: FC<InputComponentProps<ITextField>> = ({
 
   return (
     <Field
+      ariaLabel="text input"
       as={Input}
       type="text"
       variant="faded"
       size="lg"
       radius="sm"
       isDisabled={isEditMode}
-      isRequired={field.isRequired}
+      // isRequired={field.isRequired}
       value={field.defaultValue}
       defaultValue={field.defaultValue}
       id={field.id}
@@ -36,9 +37,8 @@ export const TextInput: FC<InputComponentProps<ITextField>> = ({
           })
         );
       }}
-      {...(isEditMode && {
-        errorMessage: errors[field.name] ? errors[field.name] : undefined,
-      })}
+      errorMessage={errors[field.name]}
+      isInvalid={!!errors[field.name]}
     />
   );
 };

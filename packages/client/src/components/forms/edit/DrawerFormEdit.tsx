@@ -36,7 +36,6 @@ export const DrawerFormEdit = ({
   const submitHandler = (
     values: IFieldOnEdit & { options: IFieldOption[] }
   ) => {
-    console.log('fieldType !=="select" :::', fieldType);
     if (fieldType !== "select") {
       const { options, ...withoutOptions } = values;
       dispatch(editField(withoutOptions));
@@ -111,7 +110,6 @@ export const DrawerFormEdit = ({
             defaultSelectedKeys={[options[0]?.label ?? null]}
             label="Default value"
             onSelectionChange={([key]: string) => {
-              console.log("key :::", key);
               setDefaultValue(key);
             }}
           >

@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import { InputComponentProps, ISelectField } from "@/types/field.types";
 import { Select, SelectItem } from "@heroui/react";
+import { Field } from "formik";
 import { FC } from "react";
 
 export const SelectInput: FC<InputComponentProps<ISelectField>> = ({
@@ -10,25 +11,26 @@ export const SelectInput: FC<InputComponentProps<ISelectField>> = ({
   const { isEditMode } = useAppSelector((store) => store.appSlice);
 
   return (
-    <Select
+    <Field
+      aria-label="select input"
+      as={Select}
       id={field.id}
       required={field.isRequired}
       isDisabled={isEditMode}
       variant="faded"
       size="lg"
       radius="sm"
-      isRequired={field.isRequired}
+      // isRequired={field.isRequired}
       value={field.value}
       placeholder={field?.placeholder || ""}
       defaultSelectedKeys={[field.defaultValue]}
       name={field.name}
-      {...(!isEditMode && {
-        errorMessage: errors[field.name] ? errors[field.name] : undefined,
-      })}
+      errorMessage={errors[field.name]}
+      isInvalid={!!errors[field.name]}
     >
       {field.options.map((option) => (
         <SelectItem key={option.value}>{option.label}</SelectItem>
       ))}
-    </Select>
+    </Field>
   );
 };

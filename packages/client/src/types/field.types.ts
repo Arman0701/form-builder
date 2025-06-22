@@ -5,7 +5,6 @@ export type IFieldBase = {
   isRequired: boolean;
 
   name: string;
-  order: number;
 
   label?: string;
   placeholder: string | null;
@@ -49,10 +48,10 @@ export type IFieldOption = { label: string; value: string; id: string };
 
 export type IFieldOnAdd = Omit<
   IField,
-  "id" | "defaultValue" | "value" | "order" | "label"
+  "id" | "defaultValue" | "value" | "label"
 >;
 
-export type IFieldOnEdit = Omit<IField, "order" | "name">;
+export type IFieldOnEdit = Omit<IField, "name">;
 
 export type IFieldOnReorder = IField[];
 

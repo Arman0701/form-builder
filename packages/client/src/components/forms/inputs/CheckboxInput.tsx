@@ -8,36 +8,37 @@ import { FC } from "react";
 
 export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
   field,
+  errors,
 }) => {
   const { isEditMode } = useAppSelector((store) => store.appSlice);
   const dispatch = useAppDispatch();
 
   return (
-    <>
-      <Field
-        as={Checkbox}
-        id={field.id}
-        isDisabled={isEditMode}
-        size="lg"
-        radius="sm"
-        isRequired={field.isRequired}
-        checked={field.value}
-        defaultSelected={field.defaultValue}
-        placeholder={field?.placeholder || ""}
-        name={field.name}
-        onValueChange={(isSelected: boolean) => {
-          dispatch(
-            editField({
-              ...field,
-              value: isSelected,
-              defaultValue: isSelected,
-            })
-          );
-        }}
-      >
-        {field.placeholder}
-      </Field>
-      <ErrorMessage name={field.name} component="span" />
-    </>
+    <Field
+      aria-label="checkbox input"
+      as={Checkbox}
+      id={field.id}
+      isDisabled={isEditMode}
+      size="lg"
+      radius="sm"
+      // isRequired={field.isRequired}
+      checked={field.value}
+      defaultSelected={field.defaultValue}
+      placeholder={field?.placeholder || ""}
+      errorMessage={errors[field.name]}
+      isInvalid={!!errors[field.name]}
+      name={field.name}
+      onValueChange={(isSelected: boolean) => {
+        dispatch(
+          editField({
+            ...field,
+            value: isSelected,
+            defaultValue: isSelected,
+          })
+        );
+      }}
+    >
+      {field.placeholder}
+    </Field>
   );
 };

@@ -7,7 +7,7 @@ const apiRouter = Router();
 apiRouter.post("/save-form", async (req: Request, res: Response) => {
   try {
     const formData = req.body;
-    const dataRef = ref(db, `forms/${formData.id}`);
+    const dataRef = ref(db, `forms/${formData.form_id}`);
     await set(dataRef, formData);
 
     res

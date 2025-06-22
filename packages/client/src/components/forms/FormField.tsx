@@ -44,7 +44,7 @@ export const FormField = ({ field, errors, touched }: IProps) => {
           <FormFieldActions field={field} errors={errors} />
         </div>
       </CardHeader>
-      <CardFooter className="p-0 min-h-12.5">
+      <CardFooter className="p-0 min-h-14">
         <RelativeInput field={field} errors={errors} />
       </CardFooter>
     </Card>

@@ -16,6 +16,7 @@ export const NumberInput: FC<InputComponentProps<INumberField>> = ({
   return (
     <Field
       as={Input}
+      ariaLabel="number input"
       type="number"
       variant="faded"
       size="lg"
@@ -36,9 +37,8 @@ export const NumberInput: FC<InputComponentProps<INumberField>> = ({
           })
         );
       }}
-      {...(!isEditMode && {
-        errorMessage: errors[field.name] ? errors[field.name] : undefined,
-      })}
+      errorMessage={errors[field.name]}
+      isInvalid={!!errors[field.name]}
     />
   );
 };
