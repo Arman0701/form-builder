@@ -150,6 +150,7 @@ const fieldsSlice = createSlice({
     },
     resetFormData(state) {
       state.fields = initialState.fields;
+      state.formId = genId();
       state.formName = initialState.formName;
     },
   },

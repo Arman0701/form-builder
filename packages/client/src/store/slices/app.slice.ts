@@ -11,9 +11,8 @@ const appSlice = createSlice({
     toggleEditMode(state) {
       state.isEditMode = !state.isEditMode;
     },
-    submitFormSchema(state) {},
   },
 });
 
-export const { toggleEditMode, submitFormSchema } = appSlice.actions;
+export const { toggleEditMode } = appSlice.actions;
 export default appSlice.reducer;

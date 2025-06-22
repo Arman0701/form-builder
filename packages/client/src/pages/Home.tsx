@@ -3,7 +3,9 @@ import { fetchAPI } from "@/api/fetchApi";
 import { FormField } from "@/components/forms/FormField";
 import { AsideMenu } from "@/components/layout/AsideMenu";
 import { Header } from "@/components/layout/Header";
+import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { resetFormData } from "@/store/slices/fields.slice";
 import { IField } from "@/types/field.types";
 import { createValidationSchema } from "@/utils/createValidationSchema";
 import { toastify } from "@/utils/toastify";
@@ -16,6 +18,7 @@ export const HomePage: FC = () => {
   const { formName, fields, formId } = useAppSelector(
     (store) => store.fieldsSlice
   );
+  const dispatch = useAppDispatch();
 
   const formSubmitHandler = async (
     values: typeof initialValues,
@@ -40,6 +43,8 @@ export const HomePage: FC = () => {
         title: "Something went wrong!",
         description: "Error while submitting form!",
       });
+    } finally {
+      dispatch(resetFormData());
     }
   };
 
@@ -63,8 +68,6 @@ export const HomePage: FC = () => {
               initialValues={initialValues}
               onSubmit={formSubmitHandler}
               validationSchema={createValidationSchema(fields)}
-              validateOnBlur={false}
-              validateOnChange={false}
             >
               {({ errors, isSubmitting }) => (
                 <Form

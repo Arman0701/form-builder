@@ -3,35 +3,18 @@ import * as Yup from "yup";
 
 export const createValidationSchema = (fields: IField[]) => {
   const shape: Record<string, Yup.AnySchema> = {};
+  const typesMap = {
+    text: Yup.string(),
+    number: Yup.number(),
+    checkbox: Yup.bool(),
+    select: Yup.string(),
+  };
 
   fields.forEach((field) => {
     let validator: Yup.AnySchema;
+    validator = typesMap[field.type];
 
-    switch (field.type) {
-      case "text":
-        validator = Yup.string();
-        break;
-      case "number":
-        validator = Yup.number().typeError("Must be a number");
-        break;
-      case "checkbox":
-        validator = Yup.boolean();
-        break;
-      case "select":
-        validator = Yup.string();
-        break;
-      default:
-        validator = Yup.mixed(); // fallback
-    }
-
-    const conditions = [
-      field.defaultValue === "",
-      field.value === "",
-      field.defaultValue === "unchecked",
-      field.value === "unchecked",
-    ].includes(true);
-
-    if (field.isRequired && conditions) {
+    if (field.isRequired && (!field.defaultValue || !field.value)) {
       validator = validator.required(`${field.label} is required`);
     }
 
