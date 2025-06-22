@@ -1,28 +1,43 @@
+import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { editField } from "@/store/slices/fields.slice";
 import { ICheckboxField, InputComponentProps } from "@/types/field.types";
 import { Checkbox } from "@heroui/react";
+import { ErrorMessage, Field } from "formik";
 import { FC } from "react";
 
 export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
   field,
-  errors,
 }) => {
   const { isEditMode } = useAppSelector((store) => store.appSlice);
+  const dispatch = useAppDispatch();
 
   return (
-    <Checkbox
-      id={field.id}
-      isDisabled={isEditMode}
-      size="lg"
-      radius="sm"
-      isRequired={field.isRequired}
-      checked={field.value}
-      defaultSelected={field.defaultValue}
-      placeholder={field.placeholder}
-      name={field.name}
-      errorMessage={errors[field.name] ? errors[field.name] : undefined}
-    >
-      Example toggler
-    </Checkbox>
+    <>
+      <Field
+        as={Checkbox}
+        id={field.id}
+        isDisabled={isEditMode}
+        size="lg"
+        radius="sm"
+        isRequired={field.isRequired}
+        checked={field.value}
+        defaultSelected={field.defaultValue}
+        placeholder={field?.placeholder || ""}
+        name={field.name}
+        onValueChange={(isSelected: boolean) => {
+          dispatch(
+            editField({
+              ...field,
+              value: isSelected,
+              defaultValue: isSelected,
+            })
+          );
+        }}
+      >
+        {field.placeholder}
+      </Field>
+      <ErrorMessage name={field.name} component="span" />
+    </>
   );
 };

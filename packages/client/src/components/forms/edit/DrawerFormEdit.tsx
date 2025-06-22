@@ -16,7 +16,7 @@ import {
 } from "@heroui/react";
 import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 import { editField } from "@/store/slices/fields.slice";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { BaseIcon } from "@/components/ui/BaseIcon";
 import { v4 as genId } from "uuid";
 
@@ -29,17 +29,21 @@ export const DrawerFormEdit = ({
   const [options, setOptions] = useState<IFieldOption[]>(
     field.type === "select" ? field.options : []
   );
+  const [defaultValue, setDefaultValue] = useState("");
   const [currentOptionValue, setCurrentOptionValue] =
     useState<IFieldOption["value"]>("");
 
   const submitHandler = (
     values: IFieldOnEdit & { options: IFieldOption[] }
   ) => {
+    console.log('fieldType !=="select" :::', fieldType);
     if (fieldType !== "select") {
       const { options, ...withoutOptions } = values;
       dispatch(editField(withoutOptions));
       return;
     }
+    values.options = options;
+    values.defaultValue = defaultValue;
     dispatch(editField(values));
   };
 
@@ -50,6 +54,7 @@ export const DrawerFormEdit = ({
     isRequired: field.isRequired,
     type: field.type,
     placeholder: field.placeholder,
+    value: field.value,
     options,
   };
 
@@ -94,20 +99,37 @@ export const DrawerFormEdit = ({
             name="defaultValue"
             as={Select}
             label="Default value"
-            defaultSelectedKeys={[field.defaultValue?.toString() || "false"]}
+            defaultSelectedKeys={[field.defaultValue || "false"]}
           >
-            <SelectItem key="true">True {field.defaultValue}</SelectItem>
+            <SelectItem key="true">True</SelectItem>
             <SelectItem key="false">False</SelectItem>
           </Field>
         ) : fieldType === "select" ? (
-          <Select
+          <Field
+            as={Select}
+            name="defaultValue"
             defaultSelectedKeys={[options[0]?.label ?? null]}
             label="Default value"
+            onSelectionChange={([key]: string) => {
+              console.log("key :::", key);
+              setDefaultValue(key);
+            }}
           >
             {options.map((o) => (
               <SelectItem key={o.label}>{o.value}</SelectItem>
             ))}
-          </Select>
+          </Field>
+        ) : fieldType === "number" ? (
+          <Input
+            type="number"
+            defaultValue={"0"}
+            label="Default value"
+            name="defaultValue"
+          >
+            {options.map((o) => (
+              <SelectItem key={o.label}>{o.value}</SelectItem>
+            ))}
+          </Input>
         ) : (
           <Field
             name="defaultValue"
@@ -124,7 +146,9 @@ export const DrawerFormEdit = ({
               label="Set new option"
               size="md"
               value={currentOptionValue}
-              onChange={(e: any) => setCurrentOptionValue(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setCurrentOptionValue(e.target.value)
+              }
               endContent={
                 <Button
                   size="sm"

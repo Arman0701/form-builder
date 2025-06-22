@@ -8,7 +8,7 @@ export type IFieldBase = {
   order: number;
 
   label?: string;
-  placeholder?: string;
+  placeholder: string | null;
   type: FieldType;
 };
 
@@ -28,12 +28,11 @@ interface ICheckboxFieldRest {
   type: "checkbox";
   defaultValue: boolean | undefined;
   value: boolean | undefined;
-  placeholder?: never;
 }
 
 interface ISelectFieldRest {
   type: "select";
-  defaultValue: string | undefined;
+  defaultValue: string;
   value: string | undefined;
   options: IFieldOption[];
 }
@@ -53,13 +52,13 @@ export type IFieldOnAdd = Omit<
   "id" | "defaultValue" | "value" | "order" | "label"
 >;
 
-export type IFieldOnEdit = Omit<IField, "order" | "name" | "value">;
+export type IFieldOnEdit = Omit<IField, "order" | "name">;
 
 export type IFieldOnReorder = IField[];
 
 export interface InputComponentProps<T> {
   field: IField & T;
-  errors?: any;
+  errors: Record<string, string | boolean | undefined>;
 }
 
 export interface InputComponentPropsWithClose

@@ -11,7 +11,7 @@ import { useAppSelector } from "@/hooks/redux/useAppSelector";
 
 interface IProps {
   field: IField;
-  errors?: Record<string, string>;
+  errors: Record<string, string | boolean | undefined>;
   touched?: Record<string, boolean>;
 }
 export const FormField = ({ field, errors, touched }: IProps) => {
@@ -41,10 +41,10 @@ export const FormField = ({ field, errors, touched }: IProps) => {
           ) : null}
         </h3>
         <div className="flex gap-6">
-          <FormFieldActions field={field} />
+          <FormFieldActions field={field} errors={errors} />
         </div>
       </CardHeader>
-      <CardFooter className="p-0 h-12.5">
+      <CardFooter className="p-0 min-h-12.5">
         <RelativeInput field={field} errors={errors} />
       </CardFooter>
     </Card>

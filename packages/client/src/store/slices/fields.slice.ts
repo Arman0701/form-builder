@@ -62,6 +62,7 @@ const initialState: InitialState = {
       order: 3,
       type: "checkbox",
       label: "New Checkbox Field",
+      placeholder: "I'm agree",
       defaultValue: false,
       value: false,
     },
@@ -89,10 +90,11 @@ const fieldsSlice = createSlice({
       const newFieldBase: IFieldBase = {
         id,
         isRequired: payload.isRequired,
-        name: payload.name,
+        name: `input-${state.fields.length + 1}`,
         order: state.fields.length,
         label: `New ${label} field`,
         type: payload.type,
+        placeholder: payload.placeholder,
       };
 
       const newField = {

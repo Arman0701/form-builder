@@ -12,6 +12,9 @@ export default {
       height: {
         12.5: "3.125rem",
       },
+      minHeight: {
+        12.5: "3.125rem",
+      },
     },
   },
   darkMode: "class",

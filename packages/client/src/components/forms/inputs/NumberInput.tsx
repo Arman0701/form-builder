@@ -1,28 +1,44 @@
+import { useAppDispatch } from "@/hooks/redux/useAppDispatch";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { editField } from "@/store/slices/fields.slice";
 import { InputComponentProps, INumberField } from "@/types/field.types";
 import { Input } from "@heroui/react";
-import { FC } from "react";
+import { Field } from "formik";
+import { ChangeEvent, FC } from "react";
 
 export const NumberInput: FC<InputComponentProps<INumberField>> = ({
   field,
   errors,
 }) => {
   const { isEditMode } = useAppSelector((store) => store.appSlice);
+  const dispatch = useAppDispatch();
 
   return (
-    <Input
+    <Field
+      as={Input}
       type="number"
       variant="faded"
       size="lg"
       radius="sm"
       isDisabled={isEditMode}
       isRequired={field.isRequired}
-      value={field.value}
+      value={field.defaultValue}
       defaultValue={field.defaultValue}
       id={field.id}
-      placeholder={field.placeholder}
+      placeholder={field?.placeholder || ""}
       name={field.name}
-      errorMessage={errors[field.name] ? errors[field.name] : undefined}
+      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(
+          editField({
+            ...field,
+            value: e.target.value,
+            defaultValue: e.target.value,
+          })
+        );
+      }}
+      {...(!isEditMode && {
+        errorMessage: errors[field.name] ? errors[field.name] : undefined,
+      })}
     />
   );
 };

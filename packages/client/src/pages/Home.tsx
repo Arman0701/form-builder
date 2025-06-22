@@ -2,9 +2,11 @@ import { FormField } from "@/components/forms/FormField";
 import { AsideMenu } from "@/components/layout/AsideMenu";
 import { Header } from "@/components/layout/Header";
 import { useAppSelector } from "@/hooks/redux/useAppSelector";
+import { IField } from "@/types/field.types";
+import { createValidationSchema } from "@/utils/createValidationSchema";
 import { Button, Divider } from "@heroui/react";
 import { Form, Formik } from "formik";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 export const HomePage: FC = () => {
   const { isEditMode } = useAppSelector((store) => store.appSlice);
@@ -18,6 +20,15 @@ export const HomePage: FC = () => {
     console.log("values :::", values);
   };
 
+  const initialValues = useMemo(
+    () =>
+      fields.reduce<Record<string, IField["defaultValue"]>>((acc, cur) => {
+        acc[cur.name] = cur.defaultValue;
+        return acc;
+      }, {}),
+    [fields]
+  );
+
   return (
     <section className="flex flex-col h-screen">
       <Header />
@@ -25,8 +36,12 @@ export const HomePage: FC = () => {
         <AsideMenu />
         <main className="flex flex-col flex-1 items-center justify-center w-full h-full ">
           <div className="w-full min-h-full overflow-y-auto">
-            <Formik initialValues={{}} onSubmit={formSubmitHandler}>
-              {({ values, errors, touched }) => (
+            <Formik
+              initialValues={initialValues}
+              onSubmit={formSubmitHandler}
+              validationSchema={createValidationSchema(fields)}
+            >
+              {({ errors }) => (
                 <Form
                   id={formId}
                   className="mx-auto mt-4 flex flex-col gap-6 w-2/3 min-h-96 shadow-2xl border-2 border-gray-100 rounded-2xl px-6 py-8"

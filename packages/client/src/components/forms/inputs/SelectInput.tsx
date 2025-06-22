@@ -19,9 +19,12 @@ export const SelectInput: FC<InputComponentProps<ISelectField>> = ({
       radius="sm"
       isRequired={field.isRequired}
       value={field.value}
-      placeholder={field.placeholder}
+      placeholder={field?.placeholder || ""}
+      defaultSelectedKeys={[field.defaultValue]}
       name={field.name}
-      errorMessage={errors[field.name] ? errors[field.name] : undefined}
+      {...(!isEditMode && {
+        errorMessage: errors[field.name] ? errors[field.name] : undefined,
+      })}
     >
       {field.options.map((option) => (
         <SelectItem key={option.value}>{option.label}</SelectItem>
