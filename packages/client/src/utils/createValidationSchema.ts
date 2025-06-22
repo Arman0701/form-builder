@@ -15,9 +15,7 @@ export const createValidationSchema = (fields: IField[]) => {
         validator = Yup.number().typeError("Must be a number");
         break;
       case "checkbox":
-        validator = Yup.boolean().transform((value) =>
-          value ? "checked" : "unchecked"
-        );
+        validator = Yup.boolean();
         break;
       case "select":
         validator = Yup.string();
@@ -32,11 +30,6 @@ export const createValidationSchema = (fields: IField[]) => {
       field.defaultValue === "unchecked",
       field.value === "unchecked",
     ].includes(true);
-
-    if (field.type === "checkbox") {
-      console.log("field.value :::", field.value);
-      console.log("field.defaultValue :::", field.defaultValue);
-    }
 
     if (field.isRequired && conditions) {
       validator = validator.required(`${field.label} is required`);

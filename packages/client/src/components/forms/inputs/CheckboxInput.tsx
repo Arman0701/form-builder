@@ -3,7 +3,7 @@ import { useAppSelector } from "@/hooks/redux/useAppSelector";
 import { editField } from "@/store/slices/fields.slice";
 import { ICheckboxField, InputComponentProps } from "@/types/field.types";
 import { Checkbox } from "@heroui/react";
-import { ErrorMessage, Field } from "formik";
+import { Field } from "formik";
 import { FC } from "react";
 
 export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
@@ -21,8 +21,8 @@ export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
       isDisabled={isEditMode}
       size="lg"
       radius="sm"
-      defaultSelected={field.defaultValue === "checked"}
-      isSelected={field.defaultValue === "checked"}
+      defaultSelected={field.defaultValue}
+      isSelected={field.defaultValue}
       placeholder={field?.placeholder || ""}
       errorMessage={errors[field.name]}
       isInvalid={!!errors[field.name]}
@@ -31,8 +31,8 @@ export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
         dispatch(
           editField({
             ...field,
-            value: isSelected ? "checked" : "unchecked",
-            defaultValue: isSelected ? "checked" : "unchecked",
+            value: isSelected,
+            defaultValue: isSelected,
           })
         );
       }}

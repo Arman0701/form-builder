@@ -63,6 +63,8 @@ export const HomePage: FC = () => {
               initialValues={initialValues}
               onSubmit={formSubmitHandler}
               validationSchema={createValidationSchema(fields)}
+              validateOnBlur={false}
+              validateOnChange={false}
             >
               {({ errors, isSubmitting }) => (
                 <Form

@@ -58,8 +58,6 @@ export const DrawerFormEdit = ({
     options,
   };
 
-  console.log("field.defaultValue :::", field.defaultValue);
-
   return (
     <Formik initialValues={initialValues} onSubmit={submitHandler}>
       <Form className="flex flex-col gap-4 h-full">
@@ -106,14 +104,13 @@ export const DrawerFormEdit = ({
             name="defaultValue"
             as={Select}
             label="Default value"
-            defaultSelectedKeys={[field.defaultValue]}
-            selectedKeys={[field.defaultValue]}
+            defaultSelectedKeys={[field.defaultValue?.toString()]}
             onSelectionChange={([key]: string) => {
               setDefaultValue(key);
             }}
           >
-            <SelectItem key="checked">True</SelectItem>
-            <SelectItem key="unchecked">False</SelectItem>
+            <SelectItem key="true">True</SelectItem>
+            <SelectItem key="false">False</SelectItem>
           </Field>
         ) : fieldType === "select" ? (
           <Field

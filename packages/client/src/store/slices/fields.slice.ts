@@ -75,8 +75,8 @@ const initialState: InitialState = {
       type: "checkbox",
       label: "New Checkbox Field",
       placeholder: "I'm agree",
-      defaultValue: "unchecked",
-      value: "unchecked",
+      defaultValue: false,
+      value: false,
     },
   ],
 };
@@ -125,8 +125,8 @@ const fieldsSlice = createSlice({
         newField.value = "";
         (newField as ISelectField).options = [];
       } else if (payload.type === "checkbox") {
-        newField.defaultValue = "unchecked";
-        newField.value = "unchecked";
+        newField.defaultValue = false;
+        newField.value = false;
       }
 
       state.fields.push(newField);
