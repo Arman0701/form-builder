@@ -41,7 +41,6 @@ export const CheckboxInput: FC<InputComponentProps<ICheckboxField>> = ({
         {field.placeholder}
       </Field>
       <ErrorMessage name={field.name} component="span" />
-      {/* {errors[field.name] ? <span>{errors[field.name]}</span> : null} */}
     </>
   );
 };
